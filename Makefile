@@ -1,4 +1,4 @@
-NAME = phusion/passenger
+NAME = floze/raspbian-passenger
 VERSION = 0.9.19
 
 .PHONY: all build_all \

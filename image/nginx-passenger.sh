@@ -20,7 +20,8 @@ fi
 if [[ "$PASSENGER_ENTERPRISE" ]]; then
 	run apt-get install -y nginx-extras passenger-enterprise
 else
-	run apt-get install -y nginx-extras passenger
+	run apt-get install -y nginx-extras
+	run /usr/local/rvm/bin/rvm-exec ruby-2.3.1@global gem install passenger --no-document
 fi
 run cp /pd_build/config/30_presetup_nginx.sh /etc/my_init.d/
 run cp /pd_build/config/nginx.conf /etc/nginx/nginx.conf

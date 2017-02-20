@@ -1,5 +1,5 @@
-FROM phusion/baseimage:0.9.19
-MAINTAINER Phusion <info@phusion.nl>
+FROM floze/raspbian-baseimage:0.9.19
+MAINTAINER floze <gammafloze@gmail.com>
 
 ADD . /pd_build
 RUN /pd_build/install.sh

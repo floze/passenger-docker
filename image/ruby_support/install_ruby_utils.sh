@@ -11,7 +11,7 @@ fi
 ## Install development headers for native libraries that tend to be used often by Ruby gems.
 if ! [[ -e /tmp/ruby_native_libs_installed ]]; then
 	## For nokogiri.
-	run minimal_apt_get_install libxml2-dev libxslt1-dev
+	run minimal_apt_get_install libxml2-dev libxslt1-dev libgmp-dev
 	## For mysql and mysql2.
 	run minimal_apt_get_install libmysqlclient-dev
 	## For sqlite3.

@@ -17,14 +17,15 @@ if [[ ! -e /usr/bin/ruby ]]; then
 fi
 
 ## Install Phusion Passenger.
-if [[ "$PASSENGER_ENTERPRISE" ]]; then
-	run apt-get install -y nginx-extras passenger-enterprise
-else
-	run apt-get install -y nginx-extras
-	run /usr/local/rvm/bin/rvm-exec ruby-2.3.1@global gem install passenger --no-document
-fi
+# if [[ "$PASSENGER_ENTERPRISE" ]]; then
+	# run apt-get install -y passenger-enterprise
+# else
+	run gem install passenger --no-document
+	run ruby -S passenger-config compile-agent --auto
+# fi
 run cp /pd_build/config/30_presetup_nginx.sh /etc/my_init.d/
 run cp /pd_build/config/nginx.conf /etc/nginx/nginx.conf
+echo "passenger_root `ruby -S passenger-config --root | tail -n 1`;" > /etc/nginx/passenger.conf
 run mkdir -p /etc/nginx/main.d
 run cp /pd_build/config/nginx_main_d_default.conf /etc/nginx/main.d/default.conf
 
@@ -42,20 +43,25 @@ run sed -i 's|invoke-rc.d nginx rotate|sv 1 nginx|' /etc/logrotate.d/nginx
 if [[ -e /usr/bin/ruby2.3 ]]; then
 	run ruby2.3 -S passenger-config build-native-support
 	run setuser app ruby2.3 -S passenger-config build-native-support
+	echo "passenger_ruby /usr/bin/ruby2.3;" >> /etc/nginx/passenger.conf
 fi
 if [[ -e /usr/bin/ruby2.2 ]]; then
 	run ruby2.2 -S passenger-config build-native-support
 	run setuser app ruby2.2 -S passenger-config build-native-support
+	echo "passenger_ruby /usr/bin/ruby2.2;" >> /etc/nginx/passenger.conf
 fi
 if [[ -e /usr/bin/ruby2.1 ]]; then
 	run ruby2.1 -S passenger-config build-native-support
 	run setuser app ruby2.1 -S passenger-config build-native-support
+	echo "passenger_ruby /usr/bin/ruby2.1;" >> /etc/nginx/passenger.conf
 fi
 if [[ -e /usr/bin/ruby2.0 ]]; then
 	run ruby2.0 -S passenger-config build-native-support
 	run setuser app ruby2.0 -S passenger-config build-native-support
+	echo "passenger_ruby /usr/bin/ruby2.0;" >> /etc/nginx/passenger.conf
 fi
 if [[ -e /usr/bin/jruby ]]; then
 	run jruby --dev -S passenger-config build-native-support
 	run setuser app jruby -S passenger-config build-native-support
+	echo "passenger_ruby /usr/bin/jruby;" >> /etc/nginx/passenger.conf
 fi

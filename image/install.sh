@@ -4,6 +4,7 @@ source /pd_build/buildconfig
 
 run /pd_build/enable_repos.sh
 run /pd_build/prepare.sh
+run /pd_build/nginx.sh
 run /pd_build/utilities.sh
 
 if [[ "$ruby20" = 1 ]]; then run /pd_build/ruby-2.0.0.sh; fi
@@ -17,6 +18,6 @@ if [[ "$redis" = 1 ]]; then run /pd_build/redis.sh; fi
 if [[ "$memcached" = 1 ]]; then run /pd_build/memcached.sh; fi
 
 # Must be installed after Ruby, so that we don't end up with two Ruby versions.
-run /pd_build/nginx-passenger.sh
+run /pd_build/passenger.sh
 
 run /pd_build/finalize.sh
